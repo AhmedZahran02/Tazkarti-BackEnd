@@ -15,7 +15,7 @@ const session = require("express-session");
 
 const express = require("express");
 
-const AuthRouter = require("./routes/auth");
+const AuthRouter = require("./routes/Auth");
 const MatchRouter = require("./routes/matches");
 const SeatRouter = require("./routes/seats");
 const StadiumRouter = require("./routes/stadium");
