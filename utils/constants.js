@@ -1,0 +1,57 @@
+const EFA_TEAMS = [
+  "Al Ahly SC",
+  "Zamalek SC",
+  "Pyramids FC",
+  "Al Ittihad Alexandria",
+  "Ceramica Cleopatra",
+  "Smouha SC",
+  "ENPPI",
+  "Pharco FC",
+  "Ismaily SC",
+  "El Gouna",
+  "Tala'ea El Gaish",
+  "National Bank of Egypt SC",
+  "Future FC",
+  "Al Masry SC",
+  "Haras El Hodood",
+  "FC Masr",
+  "Ghazl El Mahalla",
+  "El Dakhleya SC",
+];
+
+
+const EG_CITIES = [
+  "cairo",
+  "alexandria",
+  "giza",
+  "tanta",
+  "mansoura",
+  "zagazig",
+  "damanhur",
+  "port said",
+  "ismailia",
+  "damietta",
+  "faiyum",
+  "beni suef",
+  "minya",
+  "asyut",
+  "sohag",
+  "qena",
+  "luxor",
+  "aswan",
+  "hurghada",
+  "safaga",
+  "marsa alam",
+  "sharm el-sheikh",
+  "dahab",
+  "el arish",
+  "siwa oasis",
+  "matruh",
+  "dakhla oasis",
+];
+
+module.exports = {
+    TEAMS: EFA_TEAMS,
+    EG_CITIES,
+    
+}
