@@ -207,10 +207,6 @@ const getAllMatches = async (req, res, next) => {
       "homeTeam awayTeam matchVenue mainReferee firstLinesman secondLinesman"
     );
 
-    if (!matches.length) {
-      return res.status(404).json({ message: "No matches found." });
-    }
-
     return res.status(200).json({
       message: "Matches fetched successfully",
       matches,
