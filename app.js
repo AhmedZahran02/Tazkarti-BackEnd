@@ -1,5 +1,4 @@
 require("dotenv").config();
-require("./utils/passport_setup");
 
 require("./models/match");
 require("./models/referee");
@@ -15,7 +14,6 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const session = require("express-session");
 
-const passport = require("passport");
 const express = require("express");
 
 const AuthRouter = require("./routes/auth");
