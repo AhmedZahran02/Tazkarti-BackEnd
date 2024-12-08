@@ -1,4 +1,4 @@
-const TeamModel = require("../models/team");
+const TeamModel = require("../models/Team");
 
 // Check if a team has participated
 const isTeamParticipated = async (teamName) => {

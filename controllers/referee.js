@@ -1,4 +1,4 @@
-const RefereeModel = require("../models/referee"); // Adjust the path to your Referee model
+const RefereeModel = require("../models/Referee"); // Adjust the path to your Referee model
 
 // Function to get referees with the role 'Main Referee'
 const getMainReferees = async (req, res, next) => {

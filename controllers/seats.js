@@ -1,4 +1,4 @@
-const SeatsModel = require("../models/seats");
+const SeatsModel = require("../models/Seats");
 const TicketModel = require("../models/Ticket");
 const crypto = require("crypto");
 

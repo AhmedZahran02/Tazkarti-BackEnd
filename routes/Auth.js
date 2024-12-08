@@ -1,7 +1,7 @@
 const { Router } = require("express");
 const router = Router();
 
-const AuthController = require("../controllers/auth");
+const AuthController = require("../controllers/Auth");
 const { verifyToken, authorizeRoles } = require("../utils/lib");
 
 router.get("/", (req, res, next) => {

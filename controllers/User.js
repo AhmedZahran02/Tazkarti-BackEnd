@@ -1,10 +1,9 @@
-const UserModel = require("../models/user");
-const UsersModel = require("../models/user");
+const UserModel = require("../models/User");
 
 const getUsers = async (req, res, next) => {
   try {
     // Find all users where the role is not 'admin'
-    const users = await UsersModel.find({ role: { $ne: "admin" } });
+    const users = await UserModel.find({ role: { $ne: "admin" } });
 
     return res
       .status(200)

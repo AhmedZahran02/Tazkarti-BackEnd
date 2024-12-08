@@ -1,5 +1,5 @@
 require("mongoose");
-const UserModel = require("../models/user");
+const UserModel = require("../models/User");
 const { createJWTToken } = require("../utils/lib");
 const { EG_CITIES } = require("../utils/constants");
 const bcrypt = require("bcrypt");

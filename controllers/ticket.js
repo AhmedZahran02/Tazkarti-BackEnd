@@ -1,6 +1,6 @@
 const TicketModel = require("../models/Ticket");
-const SeatsModel = require("../models/seats");
-const MatchModel = require("../models/match");
+const SeatsModel = require("../models/Seats");
+const MatchModel = require("../models/Match");
 const getTickets = async (req, res) => {
   const { userId } = req.params;
 

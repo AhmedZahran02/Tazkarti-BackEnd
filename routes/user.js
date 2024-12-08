@@ -2,7 +2,7 @@ const { Router } = require("express");
 const router = Router();
 const { verifyToken, authorizeRoles } = require("../utils/lib");
 
-const UserContoller = require("../controllers/user");
+const UserContoller = require("../controllers/User");
 const { verifyToken, authorizeRoles } = require("../utils/lib");
 
 router.patch("/update", verifyToken, UserContoller.updateUser);

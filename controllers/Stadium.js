@@ -1,4 +1,4 @@
-const StadiumModel = require("../models/stadium");
+const StadiumModel = require("../models/Stadium");
 
 const isRegisteredStadium = async (stadiumName) => {
   const stadiumRow = await StadiumModel.findOne({ name: stadiumName });

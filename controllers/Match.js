@@ -1,10 +1,10 @@
-const { isTeamParticipated } = require("./team");
-const { isRegisteredStadium } = require("./stadium");
+const { isTeamParticipated } = require("./Team");
+const { isRegisteredStadium } = require("./Stadium");
 const mongoose = require("mongoose");
 
-const MatchModel = require("../models/match");
-const SeatsModel = require("../models/seats");
-const StadiumModel = require("../models/stadium");
+const MatchModel = require("../models/Match");
+const SeatsModel = require("../models/Seats");
+const StadiumModel = require("../models/Stadium");
 
 const createMatch = async (req, res, next) => {
   const {

@@ -1,12 +1,11 @@
 require("dotenv").config();
 
-require("./models/match");
-require("./models/referee");
-require("./models/seats");
-require("./models/stadium");
-require("./models/team");
-require("./models/user");
-require("./models/referee");
+require("./models/Match");
+require("./models/Referee");
+require("./models/Seats");
+require("./models/Stadium");
+require("./models/Team");
+require("./models/User");
 require("./models/Ticket");
 const http = require("http");
 
