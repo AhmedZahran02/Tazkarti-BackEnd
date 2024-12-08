@@ -24,11 +24,19 @@ const TeamRouter = require("./routes/team");
 const RefereeRouter = require("./routes/referee");
 const TicketRouter = require("./routes/ticket");
 const { Server } = require("socket.io");
+const allowedOrigins = ["https://not-tazkarti.vercel.app"];
 
 const app = express();
 app.use(
   cors({
-    origin: "*", // Adjust this to the URL of your frontend
+    origin: (origin, callback) => {
+      if (allowedOrigins.includes(origin) || !origin) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true, // Allow credentials (cookies, authorization headers)
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"], // Specify allowed HTTP methods
     allowedHeaders: ["Content-Type", "Authorization"], // Specify allowed headers
   })
