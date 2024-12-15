@@ -24,18 +24,12 @@ const TeamRouter = require("./routes/team");
 const RefereeRouter = require("./routes/referee");
 const TicketRouter = require("./routes/ticket");
 const { Server } = require("socket.io");
-const allowedOrigins = ["https://not-tazkarti.vercel.app", "*"];
+const allowedOrigins = ["https://not-tazkarti.vercel.app"];
 
 const app = express();
 app.use(
   cors({
-    origin: (origin, callback) => {
-      if (allowedOrigins.includes(origin) || !origin) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
+    origin: "*",
     credentials: true, // Allow credentials (cookies, authorization headers)
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"], // Specify allowed HTTP methods
     allowedHeaders: ["Content-Type", "Authorization"], // Specify allowed headers
@@ -120,5 +114,5 @@ io.on("connection", (socket) => {
 });
 
 server.listen(8080, () => {
-  console.log("Server is running on port 5000");
+  console.log("Server is running on port 8080");
 });
