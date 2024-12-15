@@ -24,7 +24,7 @@ const TeamRouter = require("./routes/team");
 const RefereeRouter = require("./routes/referee");
 const TicketRouter = require("./routes/ticket");
 const { Server } = require("socket.io");
-const allowedOrigins = ["https://not-tazkarti.vercel.app"];
+const allowedOrigins = ["https://not-tazkarti.vercel.app", "*"];
 
 const app = express();
 app.use(
