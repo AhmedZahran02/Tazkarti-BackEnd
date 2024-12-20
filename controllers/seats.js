@@ -1,5 +1,6 @@
 const SeatsModel = require("../models/Seats");
 const TicketModel = require("../models/Ticket");
+const MatchModel = require("../models/Match");
 const crypto = require("crypto");
 
 const mongoose = require("mongoose");
@@ -30,6 +31,27 @@ const reserveSeat = async (req, res, next) => {
 
   if (!userId || !matchId || !row || !column || !cardNumber || !pinNumber) {
     return res.status(400).json({ message: "Missing required fields" });
+  }
+
+  const userTickets = await TicketModel.find({ userId: userId });
+  const currentMatch = await MatchModel.findById(matchId);
+  
+  function parseDateTime(date, time) {
+    return new Date(`${date}T${time}:00`); //time is in HH:mm format
+  }
+  
+  const currentMatchDateTime = parseDateTime(currentMatch.date, currentMatch.time);
+  
+  for (const ticket of userTickets) {
+    const match = await MatchModel.findById(ticket.matchId);
+    const matchDateTime = parseDateTime(match.date, match.time);
+  
+    if (
+      match.date === currentMatch.date &&
+      Math.abs(currentMatchDateTime - matchDateTime) < 90 * 60 * 1000
+    ) {
+      return res.status(404).json({ message: "Cannot reserve because of collision" });
+    }
   }
 
   const seatObject = await SeatsModel.findOne({

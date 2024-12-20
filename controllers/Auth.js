@@ -108,6 +108,10 @@ const registerUser = async (req, res, next) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Create the new user
+    let isActive = false;
+    if (role === 'fan') {
+      isActive = true;
+    }
     const newUser = new UserModel({
       username,
       email,
@@ -119,7 +123,7 @@ const registerUser = async (req, res, next) => {
       city,
       address,
       role,
-      isActive: false,
+      isActive: isActive,
     });
 
     // Save the user
