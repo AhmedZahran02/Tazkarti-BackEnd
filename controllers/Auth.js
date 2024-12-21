@@ -55,6 +55,7 @@ const removeUser = async (req, res, next) => {
   return res.status(201).json({ message: "User was successfully deleted" });
 };
 
+
 const registerUser = async (req, res, next) => {
   const {
     username,
