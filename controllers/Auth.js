@@ -1,6 +1,7 @@
 require("mongoose");
 const UserModel = require("../models/User");
 const TicketModel = require("../models/Ticket");
+const SeatsModel = require("../models/Seats");
 const { createJWTToken } = require("../utils/lib");
 const { EG_CITIES } = require("../utils/constants");
 const bcrypt = require("bcrypt");
