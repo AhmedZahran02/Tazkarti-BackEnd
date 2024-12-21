@@ -44,6 +44,7 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"], // Specify allowed headers
   })
 );
+
 const DB = require("./utils/db");
 
 const sessionOptions = {
