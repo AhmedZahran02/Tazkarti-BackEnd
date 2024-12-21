@@ -15,6 +15,21 @@ const addTeam = async (req, res, next) => {
   }
 
   try {
+
+    const existingTeam = await TeamModel.findOne({ name: teamName });
+    if (existingTeam) {
+      return res
+        .status(400)
+        .json({ message: "Team already exists in the database." });
+    }
+
+    const teamCount = await TeamModel.countDocuments();
+    if (teamCount >= 18) {
+      return res
+        .status(400)
+        .json({ message: "Cannot add more than 18 teams." });
+    }
+
     const newTeam = new TeamModel({ name: teamName });
     await newTeam.save();
     return res

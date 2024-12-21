@@ -27,11 +27,11 @@ const createMatch = async (req, res, next) => {
   try {
     // Combine `date` and `time` strings into a single Date object
     const matchStartTime = new Date(`${date}T${time}`);
-    const twelveHoursInMs = 12 * 60 * 60 * 1000;
+    const threeHoursInMs = 3 * 60 * 60 * 1000;
 
     // Calculate time ranges
-    const startTimeRange = new Date(matchStartTime.getTime() - twelveHoursInMs);
-    const endTimeRange = new Date(matchStartTime.getTime() + twelveHoursInMs);
+    const startTimeRange = new Date(matchStartTime.getTime() - threeHoursInMs);
+    const endTimeRange = new Date(matchStartTime.getTime() + threeHoursInMs);
 
     // Fetch all matches and parse their date and time into Date objects for comparison
     const allMatches = await MatchModel.find({
@@ -48,13 +48,39 @@ const createMatch = async (req, res, next) => {
     // Check for conflicts
     const conflictingMatches = allMatches.filter((match) => {
       const matchDateTime = new Date(`${match.date}T${match.time}`);
-      return matchDateTime >= startTimeRange && matchDateTime <= endTimeRange;
+      const sameHomeTeam = match.homeTeam == homeTeam;
+
+      const sameawayTeam = match.awayTeam == awayTeam;
+
+      const sameVenue = match.matchVenue == venue;
+
+      const sameReferee = match.mainReferee == mainReferee;
+
+      const sameFirstLinesman =
+        match.firstLinesman == firstLinesman ||
+        match.firstLinesman == secondLinesman;
+
+      const sameSecondLinesman =
+        match.secondLinesman == firstLinesman ||
+        match.secondLinesman == secondLinesman;
+      
+      const isOverlapped = matchDateTime >= startTimeRange &&matchDateTime <= endTimeRange
+      const isConflicting =
+        sameHomeTeam ||
+        sameawayTeam ||
+        sameawayTeam ||
+        sameVenue ||
+        sameReferee ||
+        sameFirstLinesman ||
+        sameSecondLinesman;
+
+      return ( isConflicting && isOverlapped );
     });
 
     if (conflictingMatches.length > 0) {
       return res.status(400).json({
         message:
-          "Conflict detected: One or more entities are already scheduled for another match within 12 hours.",
+          "Conflict detected: One or more entities are already scheduled for another match",
       });
     }
 
@@ -112,6 +138,61 @@ const editMatch = async (req, res, next) => {
     firstLinesman,
     secondLinesman,
   } = req.body;
+
+  // Combine `date` and `time` strings into a single Date object
+  const matchStartTime = new Date(`${date}T${time}`);
+  const threeHoursInMs = 3 * 60 * 60 * 1000;
+
+  // Calculate time ranges
+  const startTimeRange = new Date(matchStartTime.getTime() - threeHoursInMs);
+  const endTimeRange = new Date(matchStartTime.getTime() + threeHoursInMs);
+
+  // Fetch all matches and parse their date and time into Date objects for comparison
+  const allMatches = await MatchModel.find({
+    $or: [
+      { homeTeam },
+      { awayTeam },
+      { matchVenue: venue },
+      { mainReferee },
+      { firstLinesman },
+      { secondLinesman },
+    ]
+  });
+
+  // Check for conflicts
+  const conflictingMatches = allMatches.filter((match) => {
+    const matchDateTime = new Date(`${match.date}T${match.time}`);
+    const sameHomeTeam = match.homeTeam == homeTeam;
+    const sameawayTeam = match.awayTeam == awayTeam;
+    const sameVenue = match.matchVenue == venue;
+    const sameReferee = match.mainReferee == mainReferee;
+    const sameFirstLinesman =
+      match.firstLinesman == firstLinesman ||
+      match.firstLinesman == secondLinesman;
+
+    const sameSecondLinesman =
+      match.secondLinesman == firstLinesman ||
+      match.secondLinesman == secondLinesman;
+    const isOverlapped =
+      matchDateTime >= startTimeRange && matchDateTime <= endTimeRange;
+    const isConflicting =
+      sameHomeTeam ||
+      sameawayTeam ||
+      sameawayTeam ||
+      sameVenue ||
+      sameReferee ||
+      sameFirstLinesman ||
+      sameSecondLinesman;
+
+    return isConflicting && isOverlapped;
+  });
+
+  if (conflictingMatches.length > 0) {
+    return res.status(401).json({
+      message:
+        "Conflict detected: One or more entities are already scheduled for another match",
+    });
+  }
 
   let updateObject = {};
 

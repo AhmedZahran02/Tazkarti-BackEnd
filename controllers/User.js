@@ -16,7 +16,7 @@ const getUsers = async (req, res, next) => {
 
 // Update user data
 const updateUser = async (req, res, next) => {
-  const { _id, username, email, firstName, lastName, birthDate, gender, city } =
+  const { _id, username, email, firstName, lastName, gender, city } =
     req.body; // Fields to update
   let updateObject = {};
 
@@ -35,14 +35,7 @@ const updateUser = async (req, res, next) => {
   if (lastName) {
     updateObject.lastName = lastName;
   }
-  if (birthDate) {
-    updateObject.birthDate = birthDate;
-  }
-
-  if (gender) {
-    updateObject.gender = gender;
-  }
-
+  
   if (city) {
     updateObject.city = city;
   }
