@@ -25,6 +25,40 @@ const createMatch = async (req, res, next) => {
 
   // TODO: keep up with the validations
   try {
+    // Combine `date` and `time` strings into a single Date object
+    const matchStartTime = new Date(`${date}T${time}`);
+    const twelveHoursInMs = 12 * 60 * 60 * 1000;
+
+    // Calculate time ranges
+    const startTimeRange = new Date(matchStartTime.getTime() - twelveHoursInMs);
+    const endTimeRange = new Date(matchStartTime.getTime() + twelveHoursInMs);
+
+    // Fetch all matches and parse their date and time into Date objects for comparison
+    const allMatches = await MatchModel.find({
+      $or: [
+        { homeTeam },
+        { awayTeam },
+        { matchVenue: venue },
+        { mainReferee },
+        { firstLinesman },
+        { secondLinesman },
+      ],
+    });
+
+    // Check for conflicts
+    const conflictingMatches = allMatches.filter((match) => {
+      const matchDateTime = new Date(`${match.date}T${match.time}`);
+      return matchDateTime >= startTimeRange && matchDateTime <= endTimeRange;
+    });
+
+    if (conflictingMatches.length > 0) {
+      return res.status(400).json({
+        message:
+          "Conflict detected: One or more entities are already scheduled for another match within 12 hours.",
+      });
+    }
+
+    // Create a new match
     const row = new MatchModel({
       homeTeam,
       awayTeam,
@@ -37,6 +71,8 @@ const createMatch = async (req, res, next) => {
     });
     const tempId = row._id;
     await row.save();
+
+    // Generate seats for the match
     const stadium = await StadiumModel.findById(venue);
     const { height, width } = stadium; // height = number of rows, width = number of columns
 
@@ -50,6 +86,7 @@ const createMatch = async (req, res, next) => {
         });
       }
     }
+
     // Bulk insert seats into the database
     await SeatsModel.insertMany(seats);
     console.log("Seats created successfully.");
