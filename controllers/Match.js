@@ -121,7 +121,6 @@ const createMatch = async (req, res, next) => {
       data: row,
     });
   } catch (err) {
-    console.log(err);
     return res.status(405).json({ message: "Failed to create match." });
   }
 };

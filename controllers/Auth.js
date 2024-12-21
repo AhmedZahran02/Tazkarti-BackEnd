@@ -1,5 +1,6 @@
 require("mongoose");
 const UserModel = require("../models/User");
+const TicketModel = require("../models/Ticket");
 const { createJWTToken } = require("../utils/lib");
 const { EG_CITIES } = require("../utils/constants");
 const bcrypt = require("bcrypt");
@@ -46,7 +47,18 @@ const removeUser = async (req, res, next) => {
   if (!username) {
     return res.status(400).json({ message: "Missing user id" });
   }
+
   user = await UserModel.findOneAndDelete({ username });
+
+  const tickets = await TicketModel.find({ userId: user._id });
+
+  if (tickets.length > 0) {
+    const seatUpdatePromises = tickets.map((ticket) =>
+      SeatsModel.findByIdAndUpdate(ticket.seatId, { reservationId: null })
+    );
+    await Promise.all(seatUpdatePromises);
+    await TicketModel.deleteMany({ userId: user._id });
+  }
 
   if (!user) {
     return res.status(204).json({ message: "User was not found" });
@@ -54,7 +66,6 @@ const removeUser = async (req, res, next) => {
 
   return res.status(201).json({ message: "User was successfully deleted" });
 };
-
 
 const registerUser = async (req, res, next) => {
   const {
@@ -110,7 +121,7 @@ const registerUser = async (req, res, next) => {
 
     // Create the new user
     let isActive = false;
-    if (role === 'fan') {
+    if (role === "fan") {
       isActive = true;
     }
     const newUser = new UserModel({

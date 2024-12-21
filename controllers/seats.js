@@ -67,7 +67,6 @@ const reserveSeat = async (req, res, next) => {
   if (!seatObject) {
     return res.status(404).json({ message: "Seat not found" });
   }
-  console.log(seatObject);
 
   const ticketId = generateReservationId(matchId, row, column);
 
@@ -92,7 +91,6 @@ const reserveSeat = async (req, res, next) => {
       .status(200)
       .json({ message: "Seat reserved successfully", ticketId });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({ message: "Internal Server Error", error });
   }
 };

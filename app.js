@@ -88,9 +88,6 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-// app.listen(process.env.PORT || 8080, () => {
-//   console.log("Listening on port " + process.env.PORT);
-// });
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
